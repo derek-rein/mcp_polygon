@@ -20,7 +20,7 @@ except PackageNotFoundError:
 polygon_client = RESTClient(POLYGON_API_KEY)
 polygon_client.headers["User-Agent"] += f" {version_number}"
 
-poly_mcp = FastMCP("Polygon", dependencies=["polygon"])
+poly_mcp = FastMCP("Polygon", dependencies=["polygon"], host="0.0.0.0", port=8000)
 
 # Add health check endpoint for monitoring
 @poly_mcp.custom_route("/health", methods=["GET"])
