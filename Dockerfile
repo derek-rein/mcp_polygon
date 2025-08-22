@@ -10,14 +10,11 @@ RUN apt-get update && apt-get install -y \
 # Install uv for dependency management
 RUN pip install uv
 
-# Copy dependency files first for better caching
-COPY pyproject.toml uv.lock ./
+# Copy all files needed for the build (including README.md)
+COPY . .
 
 # Install dependencies
 RUN uv pip install --system -e .
-
-# Copy application code
-COPY . .
 
 # Make entrypoint executable
 RUN chmod +x entrypoint.py

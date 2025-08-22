@@ -2,7 +2,6 @@
 name = "mcp_polygon"
 version = "0.4.0"
 description = "A MCP server project"
-readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
     "mcp[cli]>=1.9.3",
