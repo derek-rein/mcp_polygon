@@ -26,9 +26,5 @@ ENV PYTHONUNBUFFERED=1
 # Expose port (Railway will automatically assign a port)
 EXPOSE 8000
 
-# Health check using Python
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" || exit 1
-
 # Use uv to run the application
 ENTRYPOINT ["uv", "run", "./entrypoint.py"]
