@@ -2,6 +2,9 @@ import os
 from mcp.server.fastmcp import FastMCP
 import asyncio
 from dotenv import load_dotenv
+import logging
+
+logger = logging.getLogger(__name__)
 
 load_dotenv()
 
@@ -27,4 +30,4 @@ def run_stdio():
     asyncio.run(poly_mcp.run_stdio_async())
 
 def run_web():
-    asyncio.run(poly_mcp.run_streamable_http_async())
+    asyncio.run(poly_mcp.run_sse_async())
