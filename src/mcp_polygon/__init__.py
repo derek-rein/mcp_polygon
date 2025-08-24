@@ -6,7 +6,3 @@ from .routes.futures import *
 from .routes.meta import *
 from .routes.options import *
 from .routes.stocks import *
-
-from .server import run
-
-__all__ = ["run"]
