@@ -1,6 +1,5 @@
 import os
 from mcp.server.fastmcp import FastMCP
-from mcp.server.auth import 
 import asyncio
 from dotenv import load_dotenv
 import logging
