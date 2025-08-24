@@ -19,4 +19,4 @@ dev = [
 ]
 
 [project.scripts]
-mcp_polygon = "mcp_polygon:run"
+mcp_polygon = "mcp_polygon:run_stdio"

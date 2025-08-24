@@ -23,5 +23,8 @@ async def health_check(request):
     })
 
 
-def run():
+def run_stdio():
     asyncio.run(poly_mcp.run_stdio_async())
+
+def run_web():
+    asyncio.run(poly_mcp.run_streamable_http_async())
