@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import os
-from mcp_polygon import server
+from src.mcp_polygon.server import run_web
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -15,7 +15,7 @@ def start_server():
     else:
         print("Starting Polygon MCP server with API key configured.")
 
-    server.run_web()
+    run_web()
 
 
 if __name__ == "__main__":
