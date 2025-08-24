@@ -30,12 +30,11 @@ def run_stdio():
     asyncio.run(poly_mcp.run_stdio_async())
 
 def run_web():
-    try:
-        # Use FastMCP's built-in run method with SSE transport
-        poly_mcp.run(transport="sse", host=os.environ.get("HOST", "0.0.0.0"), port=int(os.environ.get("PORT", "8000")))
-    except KeyboardInterrupt:
-        logger.info("Server stopped by user")
-    except Exception as e:
-        logger.error(f"Server error: {e}")
-        raise
-    # asyncio.run(poly_mcp.run_sse_async())
+
+    async def run_concurrently():
+        await asyncio.gather(
+            poly_mcp.run_sse_async('/sse'),
+            poly_mcp.run_streamable_http_async('/stream'),
+        )
+
+    asyncio.run(run_concurrently())
