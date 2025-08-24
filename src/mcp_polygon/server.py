@@ -34,7 +34,7 @@ def run_web():
     async def run_concurrently():
         await asyncio.gather(
             poly_mcp.run_sse_async('/sse'),
-            poly_mcp.run_streamable_http_async('/stream'),
+            poly_mcp.run_streamable_http_async(),
         )
 
     asyncio.run(run_concurrently())
