@@ -1,5 +1,6 @@
 import os
 from mcp.server.fastmcp import FastMCP
+from mcp.server.auth import 
 import asyncio
 from dotenv import load_dotenv
 import logging
@@ -30,4 +31,12 @@ def run_stdio():
     asyncio.run(poly_mcp.run_stdio_async())
 
 def run_web():
-    asyncio.run(poly_mcp.run_sse_async())
+    try:
+        # Use FastMCP's built-in run method with SSE transport
+        poly_mcp.run(transport="sse", host=os.environ.get("HOST", "0.0.0.0"), port=int(os.environ.get("PORT", "8000")))
+    except KeyboardInterrupt:
+        logger.info("Server stopped by user")
+    except Exception as e:
+        logger.error(f"Server error: {e}")
+        raise
+    # asyncio.run(poly_mcp.run_sse_async())
