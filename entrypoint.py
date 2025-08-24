@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+
 from src.mcp_polygon.server import run_web
 from dotenv import load_dotenv
 
