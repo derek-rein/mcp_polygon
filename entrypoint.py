@@ -2,6 +2,10 @@
 import os
 from typing import Literal
 from mcp_polygon import server
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 
 def transport() -> Literal["stdio", "sse", "streamable-http"]:
