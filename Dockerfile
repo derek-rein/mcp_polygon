@@ -8,7 +8,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Install PDM for dependency management
-RUN curl -sSL https://pdm-project.org/install-pdm.py | python3 -
+RUN curl -sSL https://pdm-project.org/install-pdm.py | python3 - && \
+    ln -s /root/.local/bin/pdm /usr/local/bin/pdm
 
 # Copy all files needed for the build (including README.md)
 COPY . .
