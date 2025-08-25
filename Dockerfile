@@ -7,14 +7,14 @@ RUN apt-get update && apt-get install -y \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Install uv for dependency management
-RUN pip install uv
+# Install PDM for dependency management
+RUN pip install pdm --user pdm
 
 # Copy all files needed for the build (including README.md)
 COPY . .
 
 # Install dependencies
-RUN uv pip install --system -e .
+RUN pdm install --prod
 
 # Make entrypoint executable
 RUN chmod +x entrypoint.py
@@ -26,5 +26,5 @@ ENV PYTHONUNBUFFERED=1
 # Expose port (Railway will automatically assign a port)
 EXPOSE 8000
 
-# Use uv to run the application
-ENTRYPOINT ["uv", "run", "./entrypoint.py"]
+# Use pdm to run the application
+ENTRYPOINT ["pdm", "run", "./entrypoint.py"]

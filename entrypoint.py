@@ -7,7 +7,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-
 # Ensure the server process doesn't exit immediately when run as an MCP server
 def start_server():
     polygon_api_key = os.environ.get("POLYGON_API_KEY", "")

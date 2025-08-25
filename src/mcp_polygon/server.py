@@ -3,7 +3,6 @@ from mcp.server.fastmcp import FastMCP
 import asyncio
 from dotenv import load_dotenv
 import logging
-from datetime import datetime, timedelta
 from pydantic import AnyHttpUrl
 
 from mcp.server.auth.provider import AccessToken, TokenVerifier
@@ -48,16 +47,15 @@ async def health_check(request):
     })
 
 
-def run_stdio():
-    asyncio.run(poly_mcp.run_stdio_async())
-
-def run_web():
+def run():
     transport = os.environ.get("MCP_TRANSPORT", "streamable-http").lower()
 
     if transport == "sse":
         asyncio.run(poly_mcp.run_sse_async('/sse'))
     elif transport == "streamable-http":
         asyncio.run(poly_mcp.run_streamable_http_async())
+    elif transport == "stdio":
+        asyncio.run(poly_mcp.run_stdio_async())
     else:
         logger.error(f"Unknown MCP_TRANSPORT value: {transport}. Must be 'sse', 'streamable-http', or 'both'.")
         raise ValueError(f"Unknown MCP_TRANSPORT value: {transport}")
