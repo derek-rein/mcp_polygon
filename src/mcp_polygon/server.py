@@ -3,23 +3,37 @@ from mcp.server.fastmcp import FastMCP
 import asyncio
 from dotenv import load_dotenv
 import logging
-from pydantic import AnyHttpUrl
 
 from mcp.server.auth.provider import AccessToken, TokenVerifier
 from mcp.server.auth.settings import AuthSettings
 
 logger = logging.getLogger(__name__)
-
 load_dotenv()
 
-class SimpleTokenVerifier(TokenVerifier):
-    """Simple token verifier for demonstration."""
 
+class BearerAuthenticator(TokenVerifier):
     async def verify_token(self, token: str) -> AccessToken | None:
+        # TODO: replace with your custom bearer validation
         if token == os.environ.get("MCP_TOKEN"):
-            return True
-        return False
+            # You must return token, client_id, scopes
+            # You can optionally set an expiration timestamp and resource string
+            return AccessToken(
+                token=token,
+                client_id="that_guy",
+                scopes=["authenticated"],
+            )
+        return None
 
+
+# Note: A stub config means that some /.well-known/ endpoints will be
+# missconfigured
+auth_settings = AuthSettings(
+    issuer_url="https://mcppolygon-production.up.railway.app/",  # stub
+
+    # Bug: resource_server_url should be None if the MCP has tools
+    # somebody forgot to add a default value  in the field(...) function (:
+    resource_server_url=None,
+)
 
 poly_mcp = FastMCP(
     "Polygon", 
@@ -27,13 +41,9 @@ poly_mcp = FastMCP(
     host=os.environ.get("HOST", "0.0.0.0"), 
     port=int(os.environ.get("PORT", "8000")),
     # Token verifier for authentication
-    token_verifier=SimpleTokenVerifier(),
+    token_verifier=BearerAuthenticator(),
     # Auth settings for RFC 9728 Protected Resource Metadata
-    auth=AuthSettings(
-        issuer_url=AnyHttpUrl("https://mcppolygon-production.up.railway.app/"),  # Authorization Server URL
-        resource_server_url=AnyHttpUrl("http://localhost:8000"),  # This server's URL
-        required_scopes=["user"],
-    ),
+    auth=auth_settings,
 )
 
 # Add health check endpoint for monitoring
