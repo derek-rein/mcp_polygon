@@ -30,11 +30,11 @@ poly_mcp = FastMCP(
     # Token verifier for authentication
     token_verifier=SimpleTokenVerifier(),
     # Auth settings for RFC 9728 Protected Resource Metadata
-    # auth=AuthSettings(
-    #     issuer_url=AnyHttpUrl("https://auth.example.com"),  # Authorization Server URL
-    #     resource_server_url=AnyHttpUrl("http://localhost:3001"),  # This server's URL
-    #     required_scopes=["user"],
-    # ),
+    auth=AuthSettings(
+        issuer_url=AnyHttpUrl("https://mcppolygon-production.up.railway.app/"),  # Authorization Server URL
+        resource_server_url=AnyHttpUrl("http://localhost:8000"),  # This server's URL
+        required_scopes=["user"],
+    ),
 )
 
 # Add health check endpoint for monitoring
