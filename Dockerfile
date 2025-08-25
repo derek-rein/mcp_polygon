@@ -14,7 +14,7 @@ RUN curl -sSL https://pdm-project.org/install-pdm.py | python3 -
 COPY . .
 
 # Install dependencies
-RUN pdm install --prod
+RUN pdm install
 
 # Make entrypoint executable
 RUN chmod +x entrypoint.py
