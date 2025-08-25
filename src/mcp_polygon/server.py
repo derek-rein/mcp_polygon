@@ -13,13 +13,13 @@ load_dotenv()
 
 class BearerAuthenticator(TokenVerifier):
     async def verify_token(self, token: str) -> AccessToken | None:
-        # TODO: replace with your custom bearer validation
+        logger.info(f"Verifying token: {token}")
         if token == os.environ.get("MCP_TOKEN"):
             # You must return token, client_id, scopes
             # You can optionally set an expiration timestamp and resource string
             return AccessToken(
                 token=token,
-                client_id="that_guy",
+                client_id="mcppolygon",
                 scopes=["authenticated"],
             )
         return None
@@ -37,6 +37,7 @@ auth_settings = AuthSettings(
 
 poly_mcp = FastMCP(
     "Polygon", 
+    instructions="This server provides stock and option data from Polygon.io",
     dependencies=["polygon"], 
     host=os.environ.get("HOST", "0.0.0.0"), 
     port=int(os.environ.get("PORT", "8000")),
@@ -44,17 +45,9 @@ poly_mcp = FastMCP(
     token_verifier=BearerAuthenticator(),
     # Auth settings for RFC 9728 Protected Resource Metadata
     auth=auth_settings,
+    stateless_http=True
 )
 
-# Add health check endpoint for monitoring
-@poly_mcp.custom_route("/health", methods=["GET"])
-async def health_check(request):
-    """Health check endpoint for deployment monitoring"""
-    from starlette.responses import JSONResponse
-    return JSONResponse({
-        "status": "healthy", 
-        "service": "polygon-mcp-server",
-    })
 
 
 def run():
