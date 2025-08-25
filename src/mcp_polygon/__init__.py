@@ -7,8 +7,10 @@ from .routes.meta import *
 from .routes.options import *
 from .routes.stocks import *
 
-from .server import run
+from .server import run_web, run_stdio
 
 __all__ = [
-    "run",
+    "run_web",
+    "run_stdio",
+
 ]

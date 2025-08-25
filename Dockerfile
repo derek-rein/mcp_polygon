@@ -30,4 +30,4 @@ ENV PYTHONUNBUFFERED=1
 EXPOSE 8000
 
 # Use pdm to run the application
-ENTRYPOINT ["pdm", "run", "./entrypoint.py"]
+ENTRYPOINT ["uv", "run", "./entrypoint.py"]

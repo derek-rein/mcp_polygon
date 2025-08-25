@@ -10,6 +10,7 @@ from mcp.server.auth.settings import AuthSettings
 logger = logging.getLogger(__name__)
 load_dotenv()
 
+LOCAL = os.environ.get("MCP_TRANSPORT", "stdio")
 
 class BearerAuthenticator(TokenVerifier):
     async def verify_token(self, token: str) -> AccessToken | None:
@@ -42,23 +43,24 @@ poly_mcp = FastMCP(
     host=os.environ.get("HOST", "0.0.0.0"), 
     port=int(os.environ.get("PORT", "8000")),
     # Token verifier for authentication
-    token_verifier=BearerAuthenticator(),
+    token_verifier=None if LOCAL else BearerAuthenticator(),
     # Auth settings for RFC 9728 Protected Resource Metadata
-    auth=auth_settings,
+    auth=None if LOCAL else auth_settings,
     stateless_http=True
 )
 
 
+def run_stdio():
+    asyncio.run(poly_mcp.run_stdio_async())
 
-def run():
+
+def run_web():
     transport = os.environ.get("MCP_TRANSPORT", "streamable-http").lower()
 
     if transport == "sse":
         asyncio.run(poly_mcp.run_sse_async('/sse'))
     elif transport == "streamable-http":
         asyncio.run(poly_mcp.run_streamable_http_async())
-    elif transport == "stdio":
-        asyncio.run(poly_mcp.run_stdio_async())
     else:
         logger.error(f"Unknown MCP_TRANSPORT value: {transport}. Must be 'sse', 'streamable-http', or 'both'.")
         raise ValueError(f"Unknown MCP_TRANSPORT value: {transport}")
